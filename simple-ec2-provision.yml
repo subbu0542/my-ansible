@@ -1,5 +1,23 @@
 ---
+
+##################################################################################################################################
+
+                                        Ansible Playbook for EC2 Instance provision
+                                                   Created by : Subbu
+
+##################################################################################################################################
+
+# defining the hosts used to run the playbook. In our scenario we run the playbook to create 
+# an ec2 instance using keys authorization to the AWS public cloud
+
+# Pre-requisites
+# Controller machine should be configured to have python,pip and AWS key based authorization must be configured.
+# Also user can export the ACCESS and SECRET key in the controller machine. It's upto user convinient..!
+
 - hosts: localhost
+
+# task section is the series of task that performs on the LOCALHOST or REMOTE machine. 
+# Present scenario, it is running on the localhost machine which inturn make calls with AWS cloud to create EC2 instance
 
   tasks:
 
