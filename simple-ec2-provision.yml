@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+
+  tasks:
+
+    - name : Provisioning a new ec2 instance
+      ec2:
+         key_name: LinuxServer
+         region: us-east-1
+         instance_type: t2.micro
+         image: ami-97785bed
+         wait: yes
+         wait_timeout: 500
+         count: 1
+         instance_tags:
+           Name: webserver
+           Owner: subbu
+         monitoring: no
+         vpc_subnet_id: subnet-fa3edfb1
+         assign_public_ip: yes
+         group: SSH
