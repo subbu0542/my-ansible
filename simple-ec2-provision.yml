@@ -23,17 +23,17 @@
 
     - name : Provisioning a new ec2 instance
       ec2:
-         key_name: LinuxServer
+         key_name: LinuxKey
          region: us-east-1
-         instance_type: t2.micro
-         image: ami-97785bed
+         instance_type: t2.micro #type of an ec2 instance (refer to aws doc for more)
+         image: ami-97785bed #amazon machine image either public or your own private image
          wait: yes
          wait_timeout: 500
-         count: 1
-         instance_tags:
-           Name: webserver
+         count: 1 #number of instances as per your requirement
+         instance_tags: #tag your servers for easy naming
+           Name: webserver 
            Owner: subbu
-         monitoring: no
-         vpc_subnet_id: subnet-fa3edfb1
+         monitoring: no # set to yes if you need monitoring, but i have set to no
+         vpc_subnet_id: subnet-fgt35537h #provide the subnet id in which the instance need to be launched
          assign_public_ip: yes
-         group: SSH
+         group: SSH #security group name that you want attach to your server
