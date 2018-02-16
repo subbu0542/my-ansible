@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+
+  tasks:
+
+    - name : Provisioning a new ec2 instance
+      ec2:
+         key_name: LinuxServer
+         region: us-east-1
+         instance_type: t2.micro
+         image: ami-97785bed
+         ebs_optimized: no
+         wait: yes
+         wait_timeout: 500
+         count: 1
+         instance_tags:
+                Name: webserver2
+                Owner: subbu
+         monitoring: no
+         vpc_subnet_id: subnet-fa3edfb1
+         assign_public_ip: yes
+         group: SSH
+      register: newinstance
+
+    - name: Attaching an EIP to newly created EC2 instance
+      ec2_eip:
+             in_vpc: yes
+             reuse_existing_ip_allowed: yes
+             state: present
+             region: us-east-1
+             instance_id: "{{ newinstance.instance_ids[0] }}"
+      register: instance_eip
+    - debug: var=instance_eip.public_ip
+
+    - name: Wait for SSH to start
+      wait_for:
+        host: "{{ newinstance.instances[0].private_ip }}"
+        port: 22
+        timeout: 300
+        sudo: false
+        delegate_to: "127.0.0.1"
+
+    - name: Add the machine to the inventory
+      add_host:
+        hostname: "{{ newinstance.instances[0].private_ip }}"
+        groupname: dev
